@@ -88,13 +88,13 @@ const getCollegedetails = async function(req,res){
     //     return res.status(400).send({ msg: "Name should contain letters only and it between 2 to 100", status: false })
     // }
 
-    let collegeDetail = await collegeModels.findOne({name : isValidquery.collegeName})
+    let collegeDetail = await collegeModels.findOne({name : isValidquery.collegeName}).select({name : 1 , fullName : 1 , logoLink : 1})
 
     if(!collegeDetail){
         return res.status(404).send({msg : "No college register with this name"})
     }
 
-    let internDetail = await internModel.find({collegeId : collegeDetail._id})
+    let internDetail = await internModel.find({collegeId : collegeDetail._id}).select({name : 1, mobile : 1, email : 1})
 
     console.log(internDetail)
 
@@ -104,11 +104,10 @@ const getCollegedetails = async function(req,res){
 
     console.log(collegeDetail)
 
-    collegeDetail.interns = internDetail
 
     console.log(collegeDetail)
 
-    res.status(200).send({data : collegeDetail , status : true})
+    res.status(200).send({data : {"name": collegeDetail.name, "fullName": collegeDetail.fullName, "logoLink": collegeDetail.logoLink, "interns": internDetail}, status : true})
 
 }catch(err){
     res.status(500).send({msg : err.message , status : false})
