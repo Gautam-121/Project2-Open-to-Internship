@@ -1,0 +1,22 @@
+{
+  "name": "project-2-college-intern",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gautam-121/project-2-College-Intern.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gautam-121/project-2-College-Intern/issues"
+  },
+  "homepage": "https://github.com/Gautam-121/project-2-College-Intern#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
