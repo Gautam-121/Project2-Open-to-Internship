@@ -29,9 +29,9 @@ const createIntern = async function (req, res) {
         if (!email) {
             return res.status(400).send({ msg: "email is required", status: false })
         }
-        if (!(/^[a-z0-9_]{3,}@[a-z]{3,}.[a-z]{3,6}$/).test(email)) {
-            return res.status(400).send({ msg: "email is invalid", status: false })
-        }
+      //  if (!(/^[a-z0-9_]{3,}@[a-z]{3,}.[a-z]{3,6}$/).test(email)) {
+        //    return res.status(400).send({ msg: "email is invalid", status: false })
+        //}
 
         const mobileNumberAlreadyExist = await internModel.findOne({ mobile: mobile })
 
