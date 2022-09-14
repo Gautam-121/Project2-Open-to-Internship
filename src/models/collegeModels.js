@@ -4,7 +4,7 @@ const mongoose = require("mongoose")
 //----------------------------------------Creating Schema---------------------------------------------
 
 
-const collegeSchema= new mongoose.schema({
+const collegeSchema= new mongoose.Schema({
     name: {
         type: String,
         required: true,
