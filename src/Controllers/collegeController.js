@@ -28,9 +28,12 @@ const createCollege = async function (req, res) {
         if (!fullName) {
             return res.status(400).send({ msg: "FullName is required", status: false })
         }
-        if (!/^[a-z]{5,100}+$/i.test(fullName)) {
-            return res.status(400).send({ msg: "Name should contain letters only and it between 2 to 100", status: false })
-        }
+        // if (!/^[a-z]{5,100}+$/i.test(fullName)) {
+        //     return res.status(400).send({ msg: "Name should contain letters only and it between 2 to 100", status: false })
+        // }
+        // if (!/^[a-z]{5,100}$/i.test(fullName)) {
+        //     res.status(400).send({ msg: "Name should contain letters only and it between 2 to 100", status: false })
+        // }
 
         if (!logoLink) {
             return res.status(400).send({ msg: "Logi link is required", status: false })
