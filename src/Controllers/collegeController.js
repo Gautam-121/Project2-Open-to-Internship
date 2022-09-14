@@ -4,19 +4,19 @@ const createCollege = async function (req, res) {
 
     try {
 
-        const isValidRequestBody = req.body
+        let isValidRequestBody = req.body
 
         if (Object.keys(isValidRequestBody).length == 0) {
             return res.status(400).send({ msg: "No paramerter found , please provide college detail", status: false })
         }
 
-        const { name, fullName, logoLink } = req.body
+        let { name, fullName, logoLink } = req.body
 
         if (!name) {
             return res.status(400).send({ msg: "Name is required", status: false })
         }
-        if (!/^[a-z]{2,100}$/i.test(name)) {
-            res.status(400).send({ msg: "Name should contain letters only and it between 2 to 100", status: false })
+        if (!/^[a-z]{2,10}+$/i.test(name)) {
+            return res.status(400).send({ msg: "Name should contain letters only and it between 2 to 100", status: false })
         }
 
         const isNameAlready = await collegeModel.findOne({ name: name })
@@ -28,8 +28,8 @@ const createCollege = async function (req, res) {
         if (!fullName) {
             return res.status(400).send({ msg: "FullName is required", status: false })
         }
-        if (!/^[a-z]{5,100}$/i.test(fullName)) {
-            res.status(400).send({ msg: "Name should contain letters only and it between 2 to 100", status: false })
+        if (!/^[a-z]{5,100}+$/i.test(fullName)) {
+            return res.status(400).send({ msg: "Name should contain letters only and it between 2 to 100", status: false })
         }
 
         if (!logoLink) {
