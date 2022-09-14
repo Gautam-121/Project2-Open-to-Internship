@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Gautam-121/project-2-College-Intern#readme",
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "mongoose": "^6.6.0"
   }
 }
