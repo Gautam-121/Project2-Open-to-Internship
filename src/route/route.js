@@ -16,5 +16,5 @@ router.get('/functionup/collegeDetails',internController.getCollegedetails)
 //------------------------------------- exporting all the router here---------------------------------
 
 module.exports = router
-
+//-----------------------------------------------------------------------------------------------------
 

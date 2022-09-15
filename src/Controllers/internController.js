@@ -1,6 +1,10 @@
+//-------------------------------------------------importing module---------------------------------------------------
+
 const collegeModels = require("../models/collegeModels")
 const internModel = require("../models/internModel")
 
+//-------------------------------------creating interns(POST /functionup/interns------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------
 
 const createIntern = async function (req, res) {
 
@@ -11,70 +15,80 @@ const createIntern = async function (req, res) {
         
         //do not accept undefiend attributes
         if (Object.keys(req.body).length == 0) {
-            return res.status(400).send({ msg: "No paramerter found , please provide college detail", status: false })
+            return res.status(400).send({status: false, msg: "No paramerter found , please provide college detail"})
         }
         
-        name = name.trim()
-
-        //validate the intern name
+        
+//---------------------------------------------------validate the intern name---------------------------------------------
         if (!name) {
-            return res.status(400).send({ msg: "Name is required", status: false })
+            return res.status(400).send({ status: false,msg: "Name is required" })
         }
+
+        //trimming extra spaces
+        if(name.trim().length==0)
+        return res.status(400).send({status : false, msg : "name must not be empty"})
 
         // check the intern name Valid or Not ?
         if (!/^[a-zA-Z-" "]{2,100}$/.test(name)) {
-            return res.status({ msg: "Name should contain letters only and it between 2 to 100", status: false })
+            return res.status(400).send({status: false, msg: "Name should contain letters only and in between 2 to 100" })
         }
 
-        //validate the intern mobile
+//---------------------------------------validate the intern email-----------------------------------------------
+        if (!email) {
+            return res.status(400).send({status: false, msg: "email is required" })
+        }
+
+        //trimming extra spaces
+        if(email.trim().length==0)
+        return res.status(400).send({status : false, msg : "email must not be empty"})
+
+        // check email is valid or not?
+        if (!(/^[a-z0-9_]{3,}@[a-z]{3,}.[a-z]{3,6}$/).test(email)) {
+           return res.status(400).send({status: false, msg: "email is invalid" })
+        }
+
+        //check if email no is already in db or not ?
+        const emailAlreadyExist = await internModel.findOne({ email: email })
+
+        if (emailAlreadyExist) {
+            return res.status(400).send({status: false, msg: `${email}  already exist` })
+        }
+
+//------------------------------------------validate the intern mobile-------------------------------------------
+
         if (!mobile) {
-            return res.status(400).send({ msg: "Mobile is required", status: false })
+            return res.status(400).send({status: false, msg: "Mobile is required" })
         }
 
         // check number must be in Number Type
         if (typeof mobile !== "number") {
-            return res.status(400).send({ msg: "Mobile number is required and mobile no. must be in Number data type" })
+            return res.status(400).send({status: false, msg: " mobile no. must be in Number data type" })
         }
 
         // check mobile Number Is Valid?
         if (!/^[6789]{1}[0-9]{9}$/.test(mobile)) {
-            return res.status(400).send({ msg: `${mobile} is invalid, please provide valid mobile number`, status: false })
-        }
-        
-        //validate the intern email
-        if (!email) {
-            return res.status(400).send({ msg: "email is required", status: false })
-        }
-
-        // check email is valid or not?
-        if (!(/^[a-z0-9_]{3,}@[a-z]{3,}.[a-z]{3,6}$/).test(email)) {
-           return res.status(400).send({ msg: "email is invalid", status: false })
+            return res.status(400).send({status: false, msg: `${mobile} is invalid, please provide a valid mobile number` })
         }
         
         //check if mobile no is already in db or not ?
         const mobileNumberAlreadyExist = await internModel.findOne({ mobile: mobile })
 
         if (mobileNumberAlreadyExist) {
-            return res.status(400).send({ msg: `${mobile} is already exist`, status: false })
+            return res.status(400).send({status: false, msg: `${mobile}  already exist` })
         }
         
-        //check if mobile no is already in db or not ?
-        const emailAlreadyExist = await internModel.findOne({ email: email })
-
-        if (emailAlreadyExist) {
-            return res.status(400).send({ msg: `${email} is already exist`, status: false })
-        }
-        
-        collegeName = collegeName.trim()
-
-        //validate the collegeName
+//------------------------------------------------validate the collegeName---------------------------------------------
         if (!collegeName) {
-            return res.status(400).send({ msg: "college Name is required", status: false })
+            return res.status(400).send({ status: false,msg: "college Name is required" })
         }
+
+        //trimming extra spaces
+        if(collegeName.trim().length==0)
+        return res.status(400).send({status : false, msg : "collegeName must not be empty"})
         
         // check collegeName is valid or not?
         if (!/^[a-zA-Z-" "]{5,100}$/.test(collegeName)) {
-            return res.status(400).send({ msg: "college Name should contain letters only and it between 5 to 100", status: false })
+            return res.status(400).send({ status: false, msg: "college Name should contain letters only and in between 5 to 100" })
         }
         
         //format collegeName in proper spacing
@@ -82,14 +96,17 @@ const createIntern = async function (req, res) {
 
         console.log(collegeName)
 
-        // find college document present or not in db on basis of collegeName
+//------------------------- find college document present or not in db on basis of collegeName-------------------------
+
         const idofCollege = await collegeModels.findOne({ fullName: collegeName }).select({ _id: 1 })
 
         if (!idofCollege) {
-            return res.status(400).send({ msg: "No one register with this name", status: false })
+            return res.status(400).send({ status: false,msg: "No college is registered with this ID" })
         }
         
-        // create intern data in db
+        
+//------------------------------------------------ create intern data in db----------------------------------------------
+
         const internData = { name, mobile, email, collegeId: idofCollege._id }
 
         const saveData = await internModel.create(internData)
@@ -103,6 +120,7 @@ const createIntern = async function (req, res) {
 }
 
 //-------------------------------------- GET /functionup/collegeDetails----------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------
 
 const getCollegedetails = async function(req,res){
 
@@ -110,7 +128,7 @@ const getCollegedetails = async function(req,res){
         
          let isValidquery = req.query
         
-         //validation  if query param is empty
+    //--------------------------------------validation  if query param is empty-----------------------------------------
         if (Object.keys(isValidquery).length == 0) 
         {
         return res.status(400).send({ status: false ,msg: "No paramerter found , please provide college detail" })
@@ -118,26 +136,27 @@ const getCollegedetails = async function(req,res){
         
         isValidquery.collegeName = isValidquery.collegeName.trim()
         
-        //validation  if collegeName is empty
+    //---------------------------------------validation  if collegeName is empty------------------------------------------
         if(!isValidquery.collegeName) 
         {
         return res.status(400).send({ status : false, msg : "CollegeName is required"})
         }
 
         if (!/^[a-zA-Z-" "]{2,10}$/.test(isValidquery.collegeName)) {
-        return res.status(400).send({ msg: "Name should contain letters only and it between 2 to 10", status: false })
+        return res.status(400).send({status: false, msg: "Name should contain letters only and it between 2 to 10" })
         }
         
         //format name in proper spacing
         isValidquery.collegeName = isValidquery.collegeName.split(" ").filter(a=>a).join("")
 
-        // finding the college in DB
+    //------------------------------------finding the college in DB---------------------------------------------------
+
         let collegeDetail = await collegeModels.findOne({name : isValidquery.collegeName,isDeleted: false}).select({name : 1 , fullName : 1 , logoLink : 1})
         
         //if no college found with the given query
          if(!collegeDetail)
          {
-         return res.status(404).send({status: false,msg : "No college register with this name"})
+         return res.status(404).send({status: false,msg : "No college registered with this name"})
          }
 
         //finding interns with the collegeId
@@ -146,10 +165,11 @@ const getCollegedetails = async function(req,res){
         //validation  if no interns found
         if(internDetail.length == 0)
         {
-        return res.status(404).send({status : false,msg : `No intern resister in ${collegeName}`} )
+        return res.status(404).send({status : false,msg : `No intern resistered in ${collegeName}`} )
         }
         
-        //final response
+    //---------------------------------------------final response---------------------------------------------------
+
         return res.status(200).send({status : true, data : {"name": collegeDetail.name, "fullName": collegeDetail.fullName, "logoLink": collegeDetail.logoLink, "interns": internDetail}})
 
     }catch(err)
@@ -158,6 +178,8 @@ const getCollegedetails = async function(req,res){
   }
 
 }
+
+//--------------------------------------------exporting module---------------------------------------------------
 
 module.exports.createIntern = createIntern
 module.exports.getCollegedetails = getCollegedetails
