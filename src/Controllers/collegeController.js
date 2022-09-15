@@ -78,14 +78,14 @@ const createCollege = async function (req, res) {
       }
 
 //-------------------------------------check if isDeleted is TRUE/FALSE/------------------------------------- ?
-        if (isDeleted) {
-            if(typeof isDeleted !== "boolean"){
-                return res.status(400).send({msg : "isDeleted must be in boolean type", status : false})
-            }
-            if(isDeleted){
-                return res.status(400).send({msg : "you can not set isdeleted True" , status : false})
-            }
-        }
+        // if (isDeleted) {
+        //     if(typeof isDeleted !== "boolean"){
+        //         return res.status(400).send({msg : "isDeleted must be in boolean type", status : false})
+        //     }
+        //     if(isDeleted){
+        //         return res.status(400).send({msg : "you can not set isdeleted True" , status : false})
+        //     }
+        // }
 //-------------------------------------/-----------------------------------/------------------------------------- 
 
         const collegeDetail = { name, fullName, logoLink }
