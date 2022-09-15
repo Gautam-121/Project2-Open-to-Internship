@@ -20,10 +20,10 @@ const createIntern = async function (req, res) {
         }
 
         // check the intern name Valid or Not ?
-        if (!/^[a-zA-Z]{2,50}$/.test(name)) {
+        if (!/^[a-zA-Z-" "]{2,100}$/.test(name)) {
             return res.status({ msg: "Name should contain letters only and it between 2 to 100", status: false })
         }
-        
+
         //validate the intern mobile
         if (!mobile) {
             return res.status(400).send({ msg: "Mobile is required", status: false })
@@ -70,11 +70,13 @@ const createIntern = async function (req, res) {
         
         // check collegeName is valid or not?
         if (!/^[a-zA-Z-" "]{5,100}$/.test(collegeName)) {
-            return res.status(400).send({ msg: "college Name should contain letters only and it between 2 to 100", status: false })
+            return res.status(400).send({ msg: "college Name should contain letters only and it between 5 to 100", status: false })
         }
         
         //format collegeName in proper spacing
         collegeName = collegeName.split(" ").filter(a=>a).join(" ")
+
+        console.log(collegeName)
 
         // find college document present or not in db on basis of collegeName
         const idofCollege = await collegeModels.findOne({ fullName: collegeName }).select({ _id: 1 })
@@ -121,8 +123,8 @@ const getCollegedetails = async function(req,res){
         }
         
         //format name in proper spacing
-        collegeName = collegeName.split(" ").filter(a=>a).join("")
-        
+        isValidquery.collegeName = isValidquery.collegeName.split(" ").filter(a=>a).join("")
+
         // finding the college in DB
         let collegeDetail = await collegeModels.findOne({name : isValidquery.collegeName,isDeleted: false}).select({name : 1 , fullName : 1 , logoLink : 1})
         

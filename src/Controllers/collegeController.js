@@ -13,8 +13,6 @@ const createCollege = async function (req, res) {
 
          // destructure college data
         let { name, fullName, logoLink, isDeleted} = req.body
-
-        console.log(name , fullName)
         
         //validate the college name
         if (!name) {
@@ -23,7 +21,7 @@ const createCollege = async function (req, res) {
         
          //Check if Name Is Vilid or Not?
         if (!/^[a-zA-Z-" "]{2,10}$/.test(name)) {
-            return res.status(400).send({ msg: "Name should contain letters only and it between 2 to 100", status: false })
+            return res.status(400).send({ msg: "Name should contain letters only and it between 2 to 10", status: false })
         }
         
         //format name in proper spacing
@@ -43,7 +41,7 @@ const createCollege = async function (req, res) {
         
         //Check if Full name Is Vilid or Not?
         if (!/^[a-zA-Z-" "]{5,100}$/.test(fullName)) {
-            return res.status(400).send({ msg: " Full Name should contain letters only and it between 2 to 100", status: false })
+            return res.status(400).send({ msg: " Full Name should contain letters only and it between 5 to 100", status: false })
         }
         
         //format name in proper spacing
@@ -55,9 +53,9 @@ const createCollege = async function (req, res) {
         }
 
         // Check the LogoLink Is Valid or Not?
-        if (!(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%.\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%\+.~#?&//=]*)/.test(data.logoLink))) {
-            return res.status(400).send({ status: false, msg: 'Not a valid logoLink' })
-      }
+    //     if (!(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%.\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%\+.~#?&//=]*)/.test(data.logoLink))) {
+    //         return res.status(400).send({ status: false, msg: 'Not a valid logoLink' })
+    //   }
 
         //check if isDeleted is TRUE/FALSE ?
         if (isDeleted) {
@@ -68,7 +66,7 @@ const createCollege = async function (req, res) {
                 return res.status(400).send({msg : "you can not set isdeleted True" , status : false})
             }
         }
-
+       
         const collegeDetail = { name, fullName, logoLink }
 
         console.log(collegeDetail)
