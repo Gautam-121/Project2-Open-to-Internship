@@ -70,48 +70,51 @@ const createIntern = async function (req, res) {
 
 }
 
+//-------------------------------------- GET /functionup/collegeDetails----------------------------------------------
+
 const getCollegedetails = async function(req,res){
 
     try{
-
-    let isValidquery = req.query
-
-    console.log(isValidquery)
-    
-    if (Object.keys(isValidquery).length == 0) {
-        return res.status(400).send({ msg: "No paramerter found , please provide college detail", status: false })
-    }
-    if(!isValidquery.collegeName){
-        return res.status(400).send({msg : "CollegeName is required", status : false})
-    }
+         let isValidquery = req.query
+        
+         //validation  if query param is empty
+        if (Object.keys(isValidquery).length == 0) 
+        {
+        return res.status(400).send({ status: false ,msg: "No paramerter found , please provide college detail" })
+        }
+        //validation  if collegeName is empty
+        if(!isValidquery.collegeName) 
+        {
+        return res.status(400).send({ status : false, msg : "CollegeName is required"})
+        }
     // if (!/^[a-z]{2,10}+$/i.test(isValidquery.collegeName)) {
     //     return res.status(400).send({ msg: "Name should contain letters only and it between 2 to 100", status: false })
     // }
+        // finding the college in DB
+        let collegeDetail = await collegeModels.findOne({name : isValidquery.collegeName,isDeleted: false}).select({name : 1 , fullName : 1 , logoLink : 1})
+        
+        //if no college found with the given query
+         if(!collegeDetail)
+         {
+         return res.status(404).send({status: false,msg : "No college register with this name"})
+         }
 
-    let collegeDetail = await collegeModels.findOne({name : isValidquery.collegeName}).select({name : 1 , fullName : 1 , logoLink : 1})
+         //finding interns with the collegeId
+        let internDetail = await internModel.find({collegeId : collegeDetail._id}).select({name : 1, mobile : 1, email : 1})
 
-    if(!collegeDetail){
-        return res.status(404).send({msg : "No college register with this name"})
-    }
+        ////validation  if no interns found
+        if(internDetail.length == 0)
+        {
+        return res.status(404).send({status : false,msg : `No intern resister in ${collegeName}`} )
+        }
+        
+        //final response
+        return res.status(200).send({status : true,data : {"name": collegeDetail.name, "fullName": collegeDetail.fullName, "logoLink": collegeDetail.logoLink, "interns": internDetail}})
 
-    let internDetail = await internModel.find({collegeId : collegeDetail._id}).select({name : 1, mobile : 1, email : 1})
-
-    console.log(internDetail)
-
-    if(internDetail.length == 0){
-        return res.status(404).send({msg : `No intern resister in ${collegeName}`, status : false} )
-    }
-
-    console.log(collegeDetail)
-
-
-    console.log(collegeDetail)
-
-    res.status(200).send({data : {"name": collegeDetail.name, "fullName": collegeDetail.fullName, "logoLink": collegeDetail.logoLink, "interns": internDetail}, status : true})
-
-}catch(err){
-    res.status(500).send({msg : err.message , status : false})
-}
+    }catch(err)
+  {
+    res.status(500).send({ status: false, msg : err.message })
+  }
 
 }
 
