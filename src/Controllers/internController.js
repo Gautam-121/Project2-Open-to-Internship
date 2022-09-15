@@ -13,6 +13,8 @@ const createIntern = async function (req, res) {
         if (Object.keys(req.body).length == 0) {
             return res.status(400).send({ msg: "No paramerter found , please provide college detail", status: false })
         }
+        
+        name = name.trim()
 
         //validate the intern name
         if (!name) {
@@ -38,7 +40,7 @@ const createIntern = async function (req, res) {
         if (!/^[6789]{1}[0-9]{9}$/.test(mobile)) {
             return res.status(400).send({ msg: `${mobile} is invalid, please provide valid mobile number`, status: false })
         }
-
+        
         //validate the intern email
         if (!email) {
             return res.status(400).send({ msg: "email is required", status: false })
@@ -63,6 +65,8 @@ const createIntern = async function (req, res) {
             return res.status(400).send({ msg: `${email} is already exist`, status: false })
         }
         
+        collegeName = collegeName.trim()
+
         //validate the collegeName
         if (!collegeName) {
             return res.status(400).send({ msg: "college Name is required", status: false })
@@ -111,7 +115,9 @@ const getCollegedetails = async function(req,res){
         {
         return res.status(400).send({ status: false ,msg: "No paramerter found , please provide college detail" })
         }
-
+        
+        isValidquery.collegeName = isValidquery.collegeName.trim()
+        
         //validation  if collegeName is empty
         if(!isValidquery.collegeName) 
         {
@@ -119,7 +125,7 @@ const getCollegedetails = async function(req,res){
         }
 
         if (!/^[a-zA-Z-" "]{2,10}$/.test(isValidquery.collegeName)) {
-        return res.status(400).send({ msg: "Name should contain letters only and it between 2 to 100", status: false })
+        return res.status(400).send({ msg: "Name should contain letters only and it between 2 to 10", status: false })
         }
         
         //format name in proper spacing

@@ -13,6 +13,8 @@ const createCollege = async function (req, res) {
 
          // destructure college data
         let { name, fullName, logoLink, isDeleted} = req.body
+
+        name = name.trim()
         
         //validate the college name
         if (!name) {
@@ -33,6 +35,8 @@ const createCollege = async function (req, res) {
         if (isNameAlready) {
             return res.status(400).send({ msg: `${isNameAlready.name} is already register`, status: false })
         }
+
+        fullName = fullName.trim()
         
         //validate the Full name
         if (!fullName) {
@@ -46,16 +50,18 @@ const createCollege = async function (req, res) {
         
         //format name in proper spacing
         fullName = fullName.split(" ").filter(a=>a).join(" ")
+        
+        logoLink = logoLink.trim()
 
         //validate the LogiLink
         if (!logoLink) {
             return res.status(400).send({ msg: "Logo link is required", status: false })
         }
 
-        // Check the LogoLink Is Valid or Not?
-    //     if (!(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%.\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%\+.~#?&//=]*)/.test(data.logoLink))) {
-    //         return res.status(400).send({ status: false, msg: 'Not a valid logoLink' })
-    //   }
+        //Check the LogoLink Is Valid or Not?
+        if (!(/^[a-zA-Z0-9!@#$&()`.:?=_+,/"-]*$/.test(logoLink))){
+            return res.status(400).send({ status: false, msg: 'Not a valid logoLink' })
+      }
 
         //check if isDeleted is TRUE/FALSE ?
         if (isDeleted) {
