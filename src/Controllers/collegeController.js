@@ -10,7 +10,7 @@ const createCollege = async function (req, res) {
 
         let isValidRequestBody = req.body
         
-        //do not accept undefiend attributes
+        // do not accept undefiend attributes
         if (Object.keys(isValidRequestBody).length == 0) {
             return res.status(400).send({ status: false, msg: "No parameter found , please provide college details" })
         }
