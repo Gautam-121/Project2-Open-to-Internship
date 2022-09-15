@@ -73,7 +73,7 @@ const createCollege = async function (req, res) {
         return res.status(400).send({status : false, msg : "logoLink must not be empty"})
 
         //Check the LogoLink Is Valid or Not?
-        if (!(/^[a-zA-Z0-9!@#$&()`.:?=_+,/"-]*$/.test(logoLink))){
+        if (!(/(http[s]:\/\/)([a-z\-0-9\/.]+)\.([a-z.]{2,3})\/([a-z0-9\-\/._~:?#\[\]@!$&'()+,;=%]*)([a-z0-9]+\.)(jpg|jpeg|png)/i.test(logoLink))){
             return res.status(400).send({ status: false, msg: 'Not a valid logoLink' })
       }
 
