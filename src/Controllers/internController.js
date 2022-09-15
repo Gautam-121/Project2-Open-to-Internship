@@ -88,7 +88,7 @@ const getCollegedetails = async function(req,res){
     //     return res.status(400).send({ msg: "Name should contain letters only and it between 2 to 100", status: false })
     // }
 
-    let collegeDetail = await collegeModels.findOne({name : isValidquery.collegeName}).select({name : 1 , fullName : 1 , logoLink : 1})
+    let collegeDetail = await collegeModels.findOne({name : isValidquery.collegeName})
 
     if(!collegeDetail){
         return res.status(404).send({msg : "No college register with this name"})

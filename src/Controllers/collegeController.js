@@ -36,7 +36,7 @@ const createCollege = async function (req, res) {
         // }
 
         if (!logoLink) {
-            return res.status(400).send({ msg: "Logi link is required", status: false })
+            return res.status(400).send({ msg: "Logo link is required", status: false })
         }
 
         const collegeDetail = { name, fullName, logoLink }

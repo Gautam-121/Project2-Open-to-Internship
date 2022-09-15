@@ -10,17 +10,19 @@ const internModel = new mongoose.Schema({
 
   name: {
     type: String,
-    require: true
+    require: true,
+    trim : true
   },
   email: {
     type: String,
     require: true,
-    unique: true
+    unique: true,
+    trim : true
   },
   mobile: {
     type: Number,
     require: true,
-    unique: true
+    unique: true,
   },
   collegeId: {
     type: Object_id,
