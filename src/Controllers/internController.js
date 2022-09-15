@@ -87,8 +87,8 @@ const createIntern = async function (req, res) {
         return res.status(400).send({status : false, msg : "collegeName must not be empty"})
         
         // check collegeName is valid or not?
-        if (!/^[a-zA-Z-" "]{5,100}$/.test(collegeName)) {
-            return res.status(400).send({ status: false, msg: "college Name should contain letters only and in between 5 to 100" })
+        if (!/^[a-zA-Z-" "]{2,100}$/.test(collegeName)) {
+            return res.status(400).send({ status: false, msg: "college Name should contain letters only and in between 2 to 100" })
         }
         
         //format collegeName in proper spacing
@@ -98,7 +98,7 @@ const createIntern = async function (req, res) {
 
 //------------------------- find college document present or not in db on basis of collegeName-------------------------
 
-        const idofCollege = await collegeModels.findOne({ fullName: collegeName }).select({ _id: 1 })
+        const idofCollege = await collegeModels.findOne({ $or: [{fullName : collegeName},{name : collegeName}]}).select({ _id: 1 })
 
         if (!idofCollege) {
             return res.status(400).send({ status: false,msg: "No college is registered with this ID" })
