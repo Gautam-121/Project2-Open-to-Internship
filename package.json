@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: This is my 2nd Project \" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Gautam-121/project-2-College-Intern.git"
   },
-  "author": "",
+  "author": "Gautam, Mehwish, Afshan",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Gautam-121/project-2-College-Intern/issues"
