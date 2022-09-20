@@ -7,12 +7,13 @@ const internModel = require("../models/internModel")
 //-------------------------------------------------------------------------------------------------------------------
 
 const createIntern = async function (req, res) {
-
+    res.setHeader("Access-Control-Allow-Origin","*")
     try {
         
         //destructure college data
         let { name, mobile, email, collegeName } = req.body
-        
+
+    
         //do not accept undefiend attributes
         if (Object.keys(req.body).length == 0) {
             return res.status(400).send({status: false, msg: "No paramerter found , please provide college detail"})
@@ -61,7 +62,7 @@ const createIntern = async function (req, res) {
         }
 
         // check number must be in Number Type
-        if (typeof mobile !== "number") {
+        if (typeof mobile !== "string") {
             return res.status(400).send({status: false, msg: " mobile no. must be in Number data type" })
         }
 
@@ -123,7 +124,7 @@ const createIntern = async function (req, res) {
 //-------------------------------------------------------------------------------------------------------------------
 
 const getCollegedetails = async function(req,res){
-
+    res.setHeader("Access-Control-Allow-Origin","*")
     try{
         
          let isValidquery = req.query

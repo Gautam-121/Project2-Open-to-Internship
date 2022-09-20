@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose')
 
-//----------------------------------------Creating Schema---------------------------------------------
+//--------------------------------------- Creating Schema ---------------------------------------------
 
 const Object_id = mongoose.Schema.Types.ObjectId
 
@@ -20,7 +20,7 @@ const internModel = new mongoose.Schema({
     trim : true
   },
   mobile: {
-    type: Number,
+    type: String,
     require: true,
     unique: true,
   },

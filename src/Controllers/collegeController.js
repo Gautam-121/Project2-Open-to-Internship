@@ -5,7 +5,7 @@ const collegeModel = require("../models/collegeModels")
 //----------------------------------------creating college(POST /functionup/colleges)------------------------------------------------------
 
 const createCollege = async function (req, res) {
-
+    res.setHeader("Access-Control-Allow-Origin","*")
     try {
 
         let isValidRequestBody = req.body
@@ -16,9 +16,10 @@ const createCollege = async function (req, res) {
         }
 
          // destructure college data
-        let { name, fullName, logoLink, isDeleted} = req.body
+        let { name, fullName, logoLink, isDeleted} = req.body  
 
-  //-------------------------------------validate the college name---------------------------------------------------
+
+  //------------------------------------ validate the college name --------------------------------------------------
 
         if (!name) {
             return res.status(400).send({ msg: "Name is required", status: false })
@@ -28,13 +29,13 @@ const createCollege = async function (req, res) {
         if(name.trim().length==0)
         return res.status(400).send({status : false, msg : "name must not be empty"})
 
-         //Check if Name Is Vilid or Not?
+         //Check if Name Is Vilid or Not? 
         if (!/^[a-zA-Z-" "]{2,10}$/.test(name)) {
             return res.status(400).send({ status: false, msg: "Name should contain letters only and in between 2 to 10" })
         }
         
         //format name in proper spacing
-        name = name.split(" ").filter(a=>a).join("")
+        name = name.split(" ").filter(a=>a).join("") //["j","k","-","","","k"] == ["j","k","-","k"] = "jk-k"
 
         //check college name is already present In DB or Not!
         const isNameAlready = await collegeModel.findOne({ name: name })
@@ -55,7 +56,7 @@ const createCollege = async function (req, res) {
         if(fullName.trim().length==0)
         return res.status(400).send({status : false, msg : "fullName must not be empty"})
         
-        //Check if Full name Is Vilid or Not?
+        //Check if Full name Is Vilid or Not?  
         if (!/^[a-zA-Z-" "]{5,100}$/.test(fullName)) {
             return res.status(400).send({ msg: " Full Name should contain letters only and it between 5 to 100", status: false })
         }
@@ -78,10 +79,10 @@ const createCollege = async function (req, res) {
       }
 
 //-------------------------------------check if isDeleted is TRUE/FALSE/------------------------------------- ?
-        if (isDeleted) 
-            if(typeof isDeleted !== "boolean"){
-                return res.status(400).send({msg : "isDeleted must be in boolean type", status : false})
-            }
+        // if (isDeleted) {
+        //     if(typeof isDeleted !== "boolean"){
+        //         return res.status(400).send({msg : "isDeleted must be in boolean type", status : false})
+        //     }
         //     if(isDeleted){
         //         return res.status(400).send({msg : "you can not set isdeleted True" , status : false})
         //     }
